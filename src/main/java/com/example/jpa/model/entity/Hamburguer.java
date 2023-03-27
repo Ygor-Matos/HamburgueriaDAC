@@ -1,7 +1,6 @@
-package com.example.jpa;
+package com.example.jpa.model.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.id.IncrementGenerator;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Hamburguer {
         for(Ingrediente x: ingredientes){
             ingre+=x.getNome()+", ";
         }
-    return "Nome:"+nome+"\nPreço:"+preco+"\nIngredientes:"+ingre;
+    return "Nome:"+nome+"\nPreço:"+preco+"\nIngredientes:"+ingre+"\nId:"+id;
 
     }
     public Hamburguer(String nome, float preco,List<Ingrediente> ingredientes){
@@ -55,6 +54,10 @@ public class Hamburguer {
 
     public void setIngredientes(List<Ingrediente> ig){
         this.ingredientes=ig;
+    }
+
+    public List<Ingrediente> getIngredientes(){
+        return ingredientes;
     }
     public void setId(long id) {
         this.id = id;

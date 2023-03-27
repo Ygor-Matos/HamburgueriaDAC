@@ -1,5 +1,6 @@
-package com.example.jpa;
+package com.example.jpa.model.entity;
 
+import com.example.jpa.model.entity.Hamburguer;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,9 +10,20 @@ public class Ingrediente {
 
     @Id @GeneratedValue
     private long id;
+
+
+
     private String nome;
     @ManyToMany(mappedBy = "ingredientes")
-    List<Hamburguer> fazParte;
+    private List<Hamburguer> fazParte;
+
+    public List<Hamburguer> getFazParte(){
+        return fazParte;
+    }
+
+    public void setFazParte(List<Hamburguer> fazParte){
+        this.fazParte=fazParte;
+    }
 
     public long getId() {
         return id;
@@ -36,5 +48,7 @@ public class Ingrediente {
     public Ingrediente(String nome){
         this.nome=nome;
     }
-
+    public String toString(){
+        return "Nome:"+nome+"\nID:"+id;
+    }
 }

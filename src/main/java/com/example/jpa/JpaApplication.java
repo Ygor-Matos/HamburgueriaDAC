@@ -1,7 +1,9 @@
 package com.example.jpa;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import com.example.jpa.controllers.HamburguerController;
+import com.example.jpa.controllers.IngredienteController;
+import com.example.jpa.model.entity.Hamburguer;
+import com.example.jpa.model.entity.Ingrediente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,7 +34,9 @@ public class JpaApplication implements CommandLineRunner {
                     "\n3-Excluir um hamburguer" +
                     "\n4-Registrar um Ingrediente" +
                     "\n5-Listar ingredientes" +
-                    "\n6-Excluir um ingrediente");
+                    "\n6-Excluir um ingrediente" +
+                    "\n7-Editar um Hamburguer" +
+                    "\n8-Editar um Ingrediente");
             op=Integer.parseInt(input.nextLine());
             switch (op){
                 case 1:
@@ -75,16 +79,56 @@ public class JpaApplication implements CommandLineRunner {
                     break;
                 case 5:
                     for(Ingrediente i:ingredienteController.listarTodos()){
-                        System.out.println(i.getNome());
+                        System.out.println(i.toString());
                     }
                     break;
                 case 6:
-                    System.out.print("digite o nome do ingrediente a ser deletado");
-                    String ingreF=input.nextLine();
+                    System.out.print("digite o ID do ingrediente a ser deletado");
+                    Long ingreF=Long.parseLong(input.nextLine());
                     ingredienteController.deletar(ingreF);
                     break;
+                case 7:
+                    System.out.println("Digite o ID do Hamburguer que deseja editar:");
+                    Hamburguer editar=new Hamburguer();
+                    int hamb=Integer.parseInt(input.nextLine());
+                    try{
+                        editar=hamburguerController.procurarHamburguerPorID(hamb);
+                        System.out.print(editar.toString());
+                    }catch (Exception e){
+                        System.out.print(e.getMessage());
+                    }
+                    System.out.println("1-editar o nome\n 2-editar o preço");
+                    int edit=Integer.parseInt(input.nextLine());
+                    switch (edit){
+                        case 1:
+                            System.out.print("Digite o novo nome do Hamburguer:");
+                            String newName=input.nextLine();
+                            editar.setNome(newName);
+                            break;
+                        case 2:
+                            System.out.print("Digite o preço do novo hamburguer:");
+                            float novoPrec=Float.parseFloat(input.nextLine());
+                            editar.setPreco(novoPrec);
+                            break;
+                    }
+                    hamburguerController.registrar(editar);
+                    break;
+                case 8:
+                    System.out.print("Digite o ID do Ingrediente que deseja editar:");
+                    Long id=Long.parseLong(input.nextLine());
+                    Ingrediente ingedit= new Ingrediente();
+                    try{
+                        ingedit= ingredienteController.procurarIngredientePorID(id);
+                    }catch(Exception e){
+                        System.out.print(e.getMessage());
+                    }
+                    System.out.print(ingedit.toString());
+                    System.out.print("Digite o novo nome:");
+                    ingedit.setNome(input.nextLine());
+                    ingredienteController.registrar(ingedit);
+                    break;
             }
-        }while(op>0 && op<7);
+        }while(op>0 && op<9);
 
 
     }
